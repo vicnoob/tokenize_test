@@ -1,0 +1,7 @@
+.app-tv-chart-container {
+	height: calc(100vh - 80px);
+}
+
+.date-range-list {
+  display: none !important;
+}
