@@ -1,22 +1,24 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { supportedResolution } from '../chart.helper';
 
 @Component({
   selector: 'app-resolution-selector-panel',
   templateUrl: './resolution-selector-panel.component.html',
-  styleUrls: ['./resolution-selector-panel.component.scss']
+  styleUrls: ['./resolution-selector-panel.component.scss'],
 })
 export class ResolutionSelectorPanelComponent implements OnInit {
-  @Output() public resolutionListChange: EventEmitter<string[]> = new EventEmitter();
-  public resolutions: string[] =  ["1", "3", "5", "15", "30", "60", "120", "240", "360", "480", "720", "D", "3D", "1W", "1M"];
+  @Output() public resolutionListChange: EventEmitter<string[]> =
+    new EventEmitter();
+  public resolutions: string[] = supportedResolution;
   public isEditMode = false;
   selectedResolutionMap: Record<string, boolean> = {
-    "1": true,
-    "3": true,
-    "5": true,
-    "15": true,
-  }
+    1: true,
+    3: true,
+    5: true,
+    15: true,
+  };
   constructor() {
-    this.resolutions.forEach(res => {
+    this.resolutions.forEach((res) => {
       if (!this.selectedResolutionMap[res]) {
         this.selectedResolutionMap[res] = false;
       }
@@ -26,29 +28,28 @@ export class ResolutionSelectorPanelComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.calculateResolutionList();
-    })
+    });
   }
 
-  public onResolutionClick(res: string) {
+  public onResolutionClick(res: string): void {
     if (!this.isEditMode) {
       return;
     }
     this.selectedResolutionMap[res] = !this.selectedResolutionMap[res];
   }
 
-  public onSave() {
+  public onSave(): void {
     this.isEditMode = false;
     this.calculateResolutionList();
   }
 
-  public calculateResolutionList() {
-    const selectedResolutions = []
+  public calculateResolutionList(): void {
+    const selectedResolutions = [];
     Object.keys(this.selectedResolutionMap).forEach((res) => {
       if (this.selectedResolutionMap[res]) {
         selectedResolutions.push(res);
       }
-    })
+    });
     this.resolutionListChange.emit(selectedResolutions);
   }
-
 }

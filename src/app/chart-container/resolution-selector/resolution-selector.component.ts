@@ -1,28 +1,30 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { intervals } from '../chart-service.service';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { intervals } from '../chart.helper';
 
 @Component({
   selector: 'app-resolution-selector',
   templateUrl: './resolution-selector.component.html',
   styleUrls: ['./resolution-selector.component.scss'],
 })
-export class ResolutionSelectorComponent implements OnInit {
-  public resolutions;
-  public intervalsMap = intervals;
+export class ResolutionSelectorComponent {
   @Output() public resolutionChange: EventEmitter<string> = new EventEmitter();
-  constructor() {}
+  public resolutions: string[] = [];
+  public intervalsMap = intervals;
+  public isDisplayPanel = false;
 
-  ngOnInit(): void {}
-
-  onResolutionClick(value) {
+  public onResolutionClick(value: string): void {
     this.resolutionChange.emit(value);
   }
 
-  onResolutionListChange(resList) {
+  public onResolutionListChange(resList: string[]): void {
     this.resolutions = resList;
   }
 
-  onClickOutSide() {
-    console.log('close');
+  public onClickOutSide(): void {
+    this.isDisplayPanel = false;
+  }
+
+  public onArrowClick(): void {
+    this.isDisplayPanel = !this.isDisplayPanel;
   }
 }

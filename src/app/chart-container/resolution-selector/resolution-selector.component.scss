@@ -1,34 +1,49 @@
 .resolution-selector-container {
   display: flex;
-  margin-bottom: 20px;
+  background: #131722;
+  padding: 20px;
+  color: #606774;
+  font-weight: bold;
 
   .resolution-block {
     margin-right: 10px;
     font-size: 20px;
     cursor: pointer;
+    width: 50px;
   }
 
   .panel-anchor {
     position: relative;
   }
 
-  .arrow-up {
-    width: 0; 
-    height: 0; 
+  .arrow {
+    width: 0;
+    height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid black;
     display: flex;
     align-self: center;
+    cursor: pointer;
+
+    &.up {
+      border-bottom: 5px solid #535863;
+    }
+
+    &.down {
+      border-top: 5px solid #535863;
+    }
   }
-  
-  .arrow-down {
-    width: 0; 
-    height: 0; 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;  
-    border-top: 5px solid black;
-    display: flex;
-    align-self: center;
+
+  .hide {
+    display: none;
   }
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }

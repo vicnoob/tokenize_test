@@ -6,7 +6,6 @@ import { ChartContainerComponent } from './chart-container/chart-container.compo
 import { HttpClientModule } from '@angular/common/http';
 import { ResolutionSelectorComponent } from './chart-container/resolution-selector/resolution-selector.component';
 import { ResolutionSelectorPanelComponent } from './chart-container/resolution-selector-panel/resolution-selector-panel.component';
-import { OutsideClickDirective } from './directives/outside-click.directive';
 import { IntervalNamePipe } from './chart-container/pipes/interval-name.pipe';
 
 @NgModule({
@@ -15,14 +14,10 @@ import { IntervalNamePipe } from './chart-container/pipes/interval-name.pipe';
     ChartContainerComponent,
     ResolutionSelectorComponent,
     ResolutionSelectorPanelComponent,
-    OutsideClickDirective,
-    IntervalNamePipe
+    IntervalNamePipe,
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule
-  ],
+  imports: [BrowserModule, HttpClientModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

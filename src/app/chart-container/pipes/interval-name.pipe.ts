@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { intervals } from '../chart-service.service';
+import { intervals } from '../chart.helper';
 
 @Pipe({
   name: 'intervalName'

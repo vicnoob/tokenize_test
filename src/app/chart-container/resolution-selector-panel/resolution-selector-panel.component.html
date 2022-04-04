@@ -21,7 +21,7 @@
         [class.selected]="selectedResolutionMap[resolution]">
         {{ resolution | intervalName }}
 
-        <div class="tick">
+        <div *ngIf="isEditMode" class="tick">
           L
         </div>
       </div>

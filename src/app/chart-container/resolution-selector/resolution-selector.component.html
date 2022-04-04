@@ -6,8 +6,9 @@
     {{ resolution | intervalName }}
   </div>
   <div class="d-flex panel-anchor">
-    <div class="arrow-down">
-    </div>
-    <app-resolution-selector-panel appOutsideClick (clickOutside)="onClickOutSide()" (resolutionListChange)="onResolutionListChange($event)"></app-resolution-selector-panel>
+    <div (click)="onArrowClick()" class="arrow" [ngClass]="{'up': isDisplayPanel, 'down': !isDisplayPanel }"></div>
+    <app-resolution-selector-panel [class.hide]="!isDisplayPanel"
+      (resolutionListChange)="onResolutionListChange($event)"></app-resolution-selector-panel>
   </div>
 </div>
+<div class="overlay" *ngIf="isDisplayPanel" (click)="onClickOutSide()"></div>
