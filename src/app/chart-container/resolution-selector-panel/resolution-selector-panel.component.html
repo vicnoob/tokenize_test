@@ -1,0 +1,30 @@
+<div class="d-flex h-100 resolution-selector-panel">
+  <div class="floating-panel">
+    <div class="panel-header">
+      <div class="title">
+        Select Intervals
+      </div>
+      <div (click)="onSave()" *ngIf="isEditMode; else editBtn" class="button">
+        Save
+      </div>
+      <ng-template #editBtn>
+        <div (click)="isEditMode = true" class="button">
+          Edit
+        </div>
+      </ng-template>
+    </div>
+    <div class="d-flex flex-wrap resolution-block-container">
+      <div class="resolution-block">
+        Time
+      </div>
+      <div (click)="onResolutionClick(resolution)" *ngFor="let resolution of resolutions" class="resolution-block"
+        [class.selected]="selectedResolutionMap[resolution]">
+        {{ resolution | intervalName }}
+
+        <div class="tick">
+          L
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

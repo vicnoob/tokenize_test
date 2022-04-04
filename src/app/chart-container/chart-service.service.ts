@@ -1,33 +1,54 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import api from "@marcius-capital/binance-api";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import api from '@marcius-capital/binance-api';
+
+export const supportedResolution = [
+  '1',
+  '3',
+  '5',
+  '15',
+  '30',
+  '60',
+  '120',
+  '240',
+  '360',
+  '480',
+  '720',
+  'D',
+  '3D',
+  'W',
+  '1W',
+  'M',
+  '1M',
+  '1D',
+];
 
 const configurationData: Record<string, boolean | string[]> = {
   supports_marks: false,
   supports_timescale_marks: false,
   supports_time: true,
-  supported_resolutions: ["1", "3", "5", "15", "1D", "1W"],
+  supported_resolutions: supportedResolution,
 };
 
-const intervals: Record<string, string> = {
-  "1": "1m",
-  "3": "3m",
-  "5": "5m",
-  "15": "15m",
-  "30": "30m",
-  "60": "1h",
-  "120": "2h",
-  "240": "4h",
-  "360": "6h",
-  "480": "8h",
-  "720": "12h",
-  D: "1d",
-  "1D": "1d",
-  "3D": "3d",
-  W: "1w",
-  "1W": "1w",
-  M: "1M",
-  "1M": "1M",
+export const intervals: Record<string, string> = {
+  '1': '1m',
+  '3': '3m',
+  '5': '5m',
+  '15': '15m',
+  '30': '30m',
+  '60': '1h',
+  '120': '2h',
+  '240': '4h',
+  '360': '6h',
+  '480': '8h',
+  '720': '12h',
+  D: '1d',
+  '1D': '1d',
+  '3D': '3d',
+  W: '1w',
+  '1W': '1w',
+  M: '1M',
+  '1M': '1M',
 };
 
 const checkInterval = (interval: string): boolean => !!intervals[interval];
@@ -56,25 +77,26 @@ function formatingKline({ openTime, open, high, low, close, volume }) {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ChartService {
   private BASE_URL = "https://api.binance.com/api/v3";
+  // private BASE_URL = 'http://localhost:3000';
   constructor(private httpClient: HttpClient) {}
 
   private getExchangeServerTime(): any {
-    return this.request("/time").then((res: any) => res.serverTime);
+    return this.request('/time').then((res: any) => res.serverTime);
   }
   private getSymbols(): any {
-    return this.request("/exchangeInfo").then((res: any) => res.symbols);
+    return this.request('/exchangeInfo').then((res: any) => res.symbols);
   }
   private getKlines({ symbol, interval, from, to }): any {
     interval = intervals[interval]; // set interval
-    console.log(interval, "interval");
+    console.log(interval, 'interval');
     from *= 1000;
     to *= 1000;
 
-    return this.request("/klines", {
+    return this.request('/klines', {
       symbol: symbol.toUpperCase(),
       interval,
       startTime: from,
@@ -96,12 +118,12 @@ export class ChartService {
   }
 
   public onReady(callback) {
-    console.log("[onReady]: Method call");
+    console.log('[onReady]: Method call');
     setTimeout(() => callback(configurationData)); // callback must be called asynchronously.
   }
 
   public searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
-    console.log("[searchSymbols]: Method call");
+    console.log('[searchSymbols]: Method call');
   }
 
   public resolveSymbol(
@@ -109,15 +131,15 @@ export class ChartService {
     onSymbolResolvedCallback,
     onResolveErrorCallback
   ) {
-    console.log("[resolveSymbol]: Method call", symbolName);
+    console.log('[resolveSymbol]: Method call', symbolName);
 
-    const comps = symbolName.split(":");
+    const comps = symbolName.split(':');
     symbolName = (comps.length > 1 ? comps[1] : symbolName).toUpperCase();
 
     // need for pricescale()
     function pricescale(symbol) {
       for (let filter of symbol.filters) {
-        if (filter.filterType == "PRICE_FILTER") {
+        if (filter.filterType == 'PRICE_FILTER') {
           return Math.round(1 / parseFloat(filter.tickSize));
         }
       }
@@ -126,15 +148,15 @@ export class ChartService {
 
     const symbolInfo = (symbol) => ({
       name: symbol.symbol,
-      description: symbol.baseAsset + " / " + symbol.quoteAsset,
+      description: symbol.baseAsset + ' / ' + symbol.quoteAsset,
       ticker: symbol.symbol,
       //exchange: 'Binance',
       //listed_exchange: 'Binance',
       //type: 'crypto',
-      session: "24x7",
+      session: '24x7',
       minmov: 1,
       pricescale: pricescale(symbol), // 	or 100
-      timezone: "UTC",
+      timezone: 'UTC',
       has_intraday: true,
       has_daily: true,
       has_weekly_and_monthly: true,
@@ -146,7 +168,7 @@ export class ChartService {
       const symbol = symbols.find((i) => i.symbol == symbolName);
       return symbol
         ? onSymbolResolvedCallback(symbolInfo(symbol))
-        : onResolveErrorCallback("[resolveSymbol]: symbol not found");
+        : onResolveErrorCallback('[resolveSymbol]: symbol not found');
     });
   }
   // get historical data for the symbol
@@ -161,10 +183,10 @@ export class ChartService {
     onErrorCallback,
     firstDataRequest
   ) {
-    console.log("[getBars] Method call", interval);
+    console.log('[getBars] Method call', interval);
 
     if (!checkInterval(interval)) {
-      return onErrorCallback("[getBars] Invalid interval");
+      return onErrorCallback('[getBars] Invalid interval');
     }
 
     const klines = await this.getKlines({
@@ -178,7 +200,7 @@ export class ChartService {
       return onHistoryCallback(klines);
     }
 
-    onErrorCallback("Klines data error");
+    onErrorCallback('Klines data error');
   }
   // subscription to real-time updates
   public subscribeBars(
@@ -189,7 +211,7 @@ export class ChartService {
     onResetCacheNeededCallback
   ) {
     console.log(
-      "[subscribeBars]: Method call with subscribeUID:",
+      '[subscribeBars]: Method call with subscribeUID:',
       subscribeUID
     );
 
@@ -201,7 +223,7 @@ export class ChartService {
 
   public unsubscribeBars(subscriberUID) {
     console.log(
-      "[unsubscribeBars]: Method call with subscriberUID:",
+      '[unsubscribeBars]: Method call with subscriberUID:',
       subscriberUID
     );
     unsubscribeKline(subscriberUID);

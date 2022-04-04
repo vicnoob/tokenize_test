@@ -11,8 +11,7 @@ import { ChartService } from './chart-service.service';
 @Component({
   selector: 'app-chart-container',
   templateUrl: './chart-container.component.html',
-  styleUrls: ['./chart-container.component.css'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./chart-container.component.scss'],
 })
 export class ChartContainerComponent implements OnInit {
   private api: IBasicDataFeed;
@@ -147,20 +146,14 @@ export class ChartContainerComponent implements OnInit {
         })
       );
       button.innerHTML = 'Check API';
-      console.log(
-        tvWidget,
-        tvWidget.activeChart(),
-        tvWidget.activeChart().resolution()
-      );
-
-      (window as any).testChart = tvWidget.activeChart();
-      // tvWidget.activeChart().resolution
-      // setTimeout(() => {
-      //   tvWidget.activeChart().setResolution('W', () => {
-      //     console.log('set');
-      //   })
-      // }, 10000)
     });
+  }
+
+  public onResolutionChange(res: string): void {
+    const cb = () => {
+      console.log('test');
+    }
+    this._tvWidget.activeChart().setResolution(res, cb);
   }
 
   ngOnDestroy() {
