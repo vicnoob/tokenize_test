@@ -8,11 +8,13 @@ import { intervals } from '../chart.helper';
 })
 export class ResolutionSelectorComponent {
   @Output() public resolutionChange: EventEmitter<string> = new EventEmitter();
+  public currentResolution: string;
   public resolutions: string[] = [];
   public intervalsMap = intervals;
   public isDisplayPanel = false;
 
   public onResolutionClick(value: string): void {
+    this.currentResolution = value;
     this.resolutionChange.emit(value);
   }
 

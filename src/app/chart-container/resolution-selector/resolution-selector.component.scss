@@ -10,6 +10,10 @@
     font-size: 20px;
     cursor: pointer;
     width: 50px;
+
+    &.selected {
+      color: #e0ad33;
+    }
   }
 
   .panel-anchor {
